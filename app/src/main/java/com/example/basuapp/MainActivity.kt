@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.taskRecyclerView)
         val inputTask = findViewById<EditText>(R.id.inputTask)
         val addButton = findViewById<Button>(R.id.addButton)
+        val clearCompletedButton = findViewById<Button>(R.id.clearCompletedButton)
 
         adapter = TaskAdapter(
             tasks,
@@ -49,6 +50,15 @@ class MainActivity : AppCompatActivity() {
                 tasks.add(0, Task(text, false))
                 adapter.notifyItemInserted(0)
                 inputTask.text.clear()
+                saveTasks()
+            }
+        }
+
+        clearCompletedButton.setOnClickListener {
+            val originalSize = tasks.size
+            tasks.removeAll { it.done }
+            if (tasks.size != originalSize) {
+                adapter.notifyDataSetChanged()
                 saveTasks()
             }
         }
